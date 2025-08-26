@@ -4,3 +4,6 @@
 
 body { @apply bg-gray-50 text-gray-900; }
 @import "./styles/theme.css";
+
+
+body { @apply bg-slate-25 text-gray-900; }
