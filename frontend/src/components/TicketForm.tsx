@@ -4,10 +4,12 @@ import { useState } from "react";
 type Props = {
   onCancel: () => void;
   onSubmit: (t: Tiquete) => void;
+  initial?: Tiquete; // <-- NUEVO
+  title?: string;    // <-- NUEVO (por defecto: "Nuevo tiquete")
 };
 
-export default function TicketForm({ onCancel, onSubmit }: Props) {
-  const [form, setForm] = useState<Tiquete>({
+export default function TicketForm({ onCancel, onSubmit, initial, title = "Nuevo tiquete" }: Props) {
+  const [form, setForm] = useState<Tiquete>(initial ?? {
     cliente_id: "",
     ruta_id: "",
     numero: "",
@@ -34,7 +36,6 @@ export default function TicketForm({ onCancel, onSubmit }: Props) {
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
-    // Validaciones básicas
     if (!form.numero.trim()) return setError("El número de vuelo es obligatorio");
     if (!form.asiento.trim()) return setError("El asiento es obligatorio");
     if (!form.puerta_embarque.trim()) return setError("La puerta de embarque es obligatoria");
@@ -48,12 +49,9 @@ export default function TicketForm({ onCancel, onSubmit }: Props) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/40" onClick={onCancel} />
-      <form
-        onSubmit={submit}
-        className="relative w-full max-w-2xl rounded-2xl bg-white shadow-xl p-6 grid gap-4"
-      >
+      <form onSubmit={submit} className="relative w-full max-w-2xl rounded-2xl bg-white shadow-xl p-6 grid gap-4">
         <div className="flex items-start justify-between gap-4">
-          <h2 className="text-xl font-semibold">Nuevo tiquete</h2>
+          <h2 className="text-xl font-semibold">{title}</h2>
           <button type="button" className="rounded-md border px-3 py-1 text-sm hover:bg-gray-50" onClick={onCancel}>
             Cancelar
           </button>
@@ -64,41 +62,20 @@ export default function TicketForm({ onCancel, onSubmit }: Props) {
         <div className="grid sm:grid-cols-2 gap-4">
           <Input label="Número de vuelo" name="numero" value={form.numero} onChange={handleChange} />
           <Input label="Asiento" name="asiento" value={form.asiento} onChange={handleChange} />
-
           <Input label="Cliente ID" name="cliente_id" value={form.cliente_id} onChange={handleChange} />
           <Input label="Ruta ID" name="ruta_id" value={form.ruta_id} onChange={handleChange} />
-
           <Input label="Puerta de embarque" name="puerta_embarque" value={form.puerta_embarque} onChange={handleChange} />
-          <Select
-            label="Clase"
-            name="clase"
-            value={form.clase}
-            onChange={handleChange}
-            options={["Económica", "Ejecutiva"]}
-          />
-
+          <Select label="Clase" name="clase" value={form.clase} onChange={handleChange} options={["Económica", "Ejecutiva"]} />
           <Input label="Fecha de vuelo (ISO)" name="fecha_vuelo" value={form.fecha_vuelo} onChange={handleChange} />
           <Input type="number" step="0.01" label="Precio" name="precio" value={form.precio} onChange={handleChange} />
-
-          <Select
-            label="Estado"
-            name="estado"
-            value={form.estado}
-            onChange={handleChange}
-            options={["confirmado", "pendiente", "abordado"]}
-          />
-
+          <Select label="Estado" name="estado" value={form.estado} onChange={handleChange} options={["confirmado", "pendiente", "abordado"]} />
           <Checkbox label="Reembolsable" name="reembolsable" checked={form.reembolsable} onChange={handleChange} />
           <Checkbox label="Equipaje incluido" name="equipaje_incluido" checked={form.equipaje_incluido} onChange={handleChange} />
         </div>
 
         <div className="flex justify-end gap-2">
-          <button type="button" className="rounded-md border px-3 py-2 text-sm" onClick={onCancel}>
-            Cancelar
-          </button>
-          <button type="submit" className="rounded-md bg-blue-600 text-white px-3 py-2 text-sm hover:bg-blue-700">
-            Guardar
-          </button>
+          <button type="button" className="rounded-md border px-3 py-2 text-sm" onClick={onCancel}>Cancelar</button>
+          <button type="submit" className="rounded-md bg-blue-600 text-white px-3 py-2 text-sm hover:bg-blue-700">Guardar</button>
         </div>
       </form>
     </div>
