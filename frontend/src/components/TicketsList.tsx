@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Tiquete } from "../types/tiquete";
 import { TIQUETES_MOCK } from "../mock/tiquetes";
 import TicketCard from "./TicketCard";
 import TicketDetail from "./TicketDetail";
 import TicketForm from "./TicketForm";
+import TicketsFilters from "./TicketsFilters";
 
 export default function TicketsList() {
   const [data, setData] = useState<Tiquete[]>([]);
@@ -11,6 +12,11 @@ export default function TicketsList() {
   const [selected, setSelected] = useState<Tiquete | null>(null);
   const [creating, setCreating] = useState(false);
   const [editing, setEditing] = useState<Tiquete | null>(null);
+
+  // filtros
+  const [query, setQuery] = useState("");
+  const [estado, setEstado] = useState("");
+  const [clase, setClase] = useState("");
 
   useEffect(() => {
     const id = setTimeout(() => {
@@ -54,12 +60,23 @@ export default function TicketsList() {
     }
   }
 
+  const filtered = useMemo(() => {
+    return data.filter((t) => {
+      if (query && !t.numero.toLowerCase().includes(query.toLowerCase())) return false;
+      if (estado && t.estado !== estado) return false;
+      if (clase && t.clase !== clase) return false;
+      return true;
+    });
+  }, [data, query, estado, clase]);
+
   if (loading) return <p className="text-sm text-gray-600">Cargando tiquetes…</p>;
 
   return (
     <>
-      <div className="flex flex-wrap gap-2 justify-between mb-4">
-        <p className="text-sm text-gray-600">{data.length} tiquetes</p>
+      <div className="flex flex-wrap gap-2 justify-between mb-2">
+        <p className="text-sm text-gray-600">
+          {filtered.length} tiquetes {filtered.length !== data.length ? `(de ${data.length})` : ""}
+        </p>
         <div className="flex gap-2">
           <button
             className="rounded-md bg-blue-600 text-white px-3 py-2 text-sm hover:bg-blue-700"
@@ -70,11 +87,17 @@ export default function TicketsList() {
         </div>
       </div>
 
-      {data.length === 0 ? (
-        <p className="text-sm">No hay tiquetes</p>
+      <TicketsFilters
+        query={query} setQuery={setQuery}
+        estado={estado} setEstado={setEstado}
+        clase={clase} setClase={setClase}
+      />
+
+      {filtered.length === 0 ? (
+        <p className="text-sm">No hay tiquetes que coincidan</p>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {data.map((t, i) => (
+          {filtered.map((t, i) => (
             <div key={t._id ?? `${t.numero}-${t.asiento}-${i}`} className="grid gap-2">
               <button className="text-left" onClick={() => setSelected(t)}>
                 <TicketCard t={t} />
