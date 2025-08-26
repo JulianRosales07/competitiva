@@ -3,34 +3,29 @@ import data from "../data/Equipaje.json";
 import "../styles/Table.css";
 
 function Tiquetes() {
-    const [tiquetes, setTiquetes] = useState([]);
     const [search, setSearch] = useState("");
+    const [filtered, setFiltered] = useState(data.tiquetes);
 
     useEffect(() => {
-        if (data && data.tiquetes) {
-            setTiquetes(data.tiquetes);
-        }
-    }, []);
-
-    const filtered = tiquetes.filter(
-        (t) =>
-            t.id.toLowerCase().includes(search.toLowerCase()) ||
-            t.origen.toLowerCase().includes(search.toLowerCase()) ||
-            t.destino.toLowerCase().includes(search.toLowerCase())
-    );
+        setFiltered(
+            data.tiquetes.filter((t) =>
+                Object.values(t).some((val) =>
+                    val.toString().toLowerCase().includes(search.toLowerCase())
+                )
+            )
+        );
+    }, [search]);
 
     return (
-        <div className="card">
-            <h2>📑 Información de Tiquetes</h2>
-
+        <div className="table-container">
+            <h2 className="title">Información de Tiquetes</h2>
             <input
                 type="text"
-                placeholder="🔍 Buscar por ID, Origen o Destino..."
+                placeholder="Buscar por ID, Origen o Destino..."
+                className="search-box"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="search-input"
             />
-
             <table className="custom-table">
                 <thead>
                     <tr>

@@ -1,34 +1,41 @@
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import data from "../data/Equipaje.json";
 import "../styles/Table.css";
 
 function Maletas() {
-    const [maletas, setMaletas] = useState([]);
     const [search, setSearch] = useState("");
+    const [filtered, setFiltered] = useState(data.maletas);
 
     useEffect(() => {
-        if (data && data.maletas) {
-            setMaletas(data.maletas);
-        }
-    }, []);
-
-    const filteredMaletas = maletas.filter(
-        (m) =>
-            m.id.toLowerCase().includes(search.toLowerCase()) ||
-            m.destino.toLowerCase().includes(search.toLowerCase())
-    );
+        setFiltered(
+            data.maletas.filter((m) =>
+                Object.values(m).some((val) =>
+                    val.toString().toLowerCase().includes(search.toLowerCase())
+                )
+            )
+        );
+    }, [search]);
 
     return (
-        <div>
-            <h2>Información de Maletas</h2>
+        <div className="table-container">
+            <h2 className="title">📦 Información de Maletas</h2>
+
+            {/* Resumen */}
+            <p className="summary">
+                Número total de maletas: <strong>{filtered.length}</strong>
+            </p>
+
+            {/* Buscador */}
             <input
                 type="text"
-                placeholder="Buscar por ID o Destino..."
+                placeholder="🔍 Buscar maleta por ID o destino..."
+                className="search-box"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="search-box"
             />
-            <table>
+
+            {/* Tabla */}
+            <table className="custom-table">
                 <thead>
                     <tr>
                         <th>ID de Maleta</th>
@@ -38,18 +45,18 @@ function Maletas() {
                     </tr>
                 </thead>
                 <tbody>
-                    {filteredMaletas.length > 0 ? (
-                        filteredMaletas.map((maleta) => (
-                            <tr key={maleta.id}>
-                                <td>{maleta.id}</td>
-                                <td>{maleta.peso}</td>
-                                <td>{maleta.destino}</td>
-                                <td>{maleta.horaDespacho}</td>
+                    {filtered.length > 0 ? (
+                        filtered.map((m) => (
+                            <tr key={m.id}>
+                                <td>{m.id}</td>
+                                <td>{m.peso}</td>
+                                <td>{m.destino}</td>
+                                <td>{m.horaDespacho}</td>
                             </tr>
                         ))
                     ) : (
                         <tr>
-                            <td colSpan="4">No se encontraron maletas</td>
+                            <td colSpan="4">⚠️ No se encontraron maletas</td>
                         </tr>
                     )}
                 </tbody>
