@@ -29,3 +29,12 @@ h2 {
 .tablink.active {
   background: #005a9e;
 }
+
+input[type="text"] {
+  display: block;
+  margin: 10px auto;
+  padding: 10px;
+  width: 50%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
