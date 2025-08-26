@@ -3,6 +3,7 @@ import data from "../data/Equipaje.json";
 
 function Maletas() {
     const [maletas, setMaletas] = useState([]);
+    const [busqueda, setBusqueda] = useState("");
 
     useEffect(() => {
         const todas = data.flatMap(item =>
@@ -11,9 +12,21 @@ function Maletas() {
         setMaletas(todas);
     }, []);
 
+    const filtradas = maletas.filter(m =>
+        m.maleta_id.toLowerCase().includes(busqueda.toLowerCase()) ||
+        m.destino.toLowerCase().includes(busqueda.toLowerCase()) ||
+        m.estado.toLowerCase().includes(busqueda.toLowerCase())
+    );
+
     return (
         <div>
             <h2>Información de Maletas</h2>
+            <input
+                type="text"
+                placeholder="Buscar por Maleta ID, Destino o Estado..."
+                value={busqueda}
+                onChange={e => setBusqueda(e.target.value)}
+            />
             <table>
                 <thead>
                     <tr>
@@ -26,7 +39,7 @@ function Maletas() {
                     </tr>
                 </thead>
                 <tbody>
-                    {maletas.map((m, index) => (
+                    {filtradas.map((m, index) => (
                         <tr key={index}>
                             <td>{m.tiquete_id}</td>
                             <td>{m.maleta_id}</td>
