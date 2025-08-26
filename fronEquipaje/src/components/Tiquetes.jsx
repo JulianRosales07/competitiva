@@ -3,14 +3,27 @@ import data from "../data/Equipaje.json";
 
 function Tiquetes() {
     const [tiquetes, setTiquetes] = useState([]);
+    const [busqueda, setBusqueda] = useState("");
 
     useEffect(() => {
         setTiquetes(data);
     }, []);
 
+    const filtrados = tiquetes.filter(item =>
+        item.tiquete_id.toLowerCase().includes(busqueda.toLowerCase()) ||
+        item.origen.toLowerCase().includes(busqueda.toLowerCase()) ||
+        item.destino.toLowerCase().includes(busqueda.toLowerCase())
+    );
+
     return (
         <div>
             <h2>Información de Tiquetes</h2>
+            <input
+                type="text"
+                placeholder="Buscar por ID, Origen o Destino..."
+                value={busqueda}
+                onChange={e => setBusqueda(e.target.value)}
+            />
             <table>
                 <thead>
                     <tr>
@@ -24,7 +37,7 @@ function Tiquetes() {
                     </tr>
                 </thead>
                 <tbody>
-                    {tiquetes.map((item) => (
+                    {filtrados.map((item) => (
                         <tr key={item.tiquete_id}>
                             <td>{item.tiquete_id}</td>
                             <td>{item.fecha_compra}</td>
