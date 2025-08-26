@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
 import data from "../data/Equipaje.json";
-import "../styles/Table.css"; // importamos los estilos
+import "../styles/Table.css";
 
 function Tiquetes() {
     const [tiquetes, setTiquetes] = useState([]);
     const [search, setSearch] = useState("");
 
     useEffect(() => {
-        setTiquetes(data.tiquetes);
+        if (data && data.tiquetes) {
+            setTiquetes(data.tiquetes);
+        }
     }, []);
 
-    // filtro dinámico por id, origen o destino
     const filtered = tiquetes.filter(
         (t) =>
             t.id.toLowerCase().includes(search.toLowerCase()) ||

@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import data from "../data/Equipaje.json";
+import "../styles/Table.css";
 
 function Maletas() {
     const [maletas, setMaletas] = useState([]);
-    const [busqueda, setBusqueda] = useState("");
+    const [search, setSearch] = useState("");
 
     useEffect(() => {
-        const todas = data.flatMap(item =>
-            item.maletas.map(m => ({ ...m, tiquete_id: item.tiquete_id }))
-        );
-        setMaletas(todas);
+        if (data && data.maletas) {
+            setMaletas(data.maletas);
+        }
     }, []);
 
-    const filtradas = maletas.filter(m =>
-        m.maleta_id.toLowerCase().includes(busqueda.toLowerCase()) ||
-        m.destino.toLowerCase().includes(busqueda.toLowerCase()) ||
-        m.estado.toLowerCase().includes(busqueda.toLowerCase())
+    const filteredMaletas = maletas.filter(
+        (m) =>
+            m.id.toLowerCase().includes(search.toLowerCase()) ||
+            m.destino.toLowerCase().includes(search.toLowerCase())
     );
 
     return (
@@ -23,32 +23,35 @@ function Maletas() {
             <h2>Información de Maletas</h2>
             <input
                 type="text"
-                placeholder="Buscar por Maleta ID, Destino o Estado..."
-                value={busqueda}
-                onChange={e => setBusqueda(e.target.value)}
+                placeholder="Buscar por ID o Destino..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="search-box"
             />
             <table>
                 <thead>
                     <tr>
-                        <th>Tiquete ID</th>
-                        <th>Maleta ID</th>
+                        <th>ID de Maleta</th>
                         <th>Peso</th>
                         <th>Destino</th>
                         <th>Hora de Despacho</th>
-                        <th>Estado</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {filtradas.map((m, index) => (
-                        <tr key={index}>
-                            <td>{m.tiquete_id}</td>
-                            <td>{m.maleta_id}</td>
-                            <td>{m.peso} {m.unidad}</td>
-                            <td>{m.destino}</td>
-                            <td>{m.hora_despacho}</td>
-                            <td>{m.estado}</td>
+                    {filteredMaletas.length > 0 ? (
+                        filteredMaletas.map((maleta) => (
+                            <tr key={maleta.id}>
+                                <td>{maleta.id}</td>
+                                <td>{maleta.peso}</td>
+                                <td>{maleta.destino}</td>
+                                <td>{maleta.horaDespacho}</td>
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan="4">No se encontraron maletas</td>
                         </tr>
-                    ))}
+                    )}
                 </tbody>
             </table>
         </div>

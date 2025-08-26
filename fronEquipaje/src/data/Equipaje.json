@@ -1,46 +1,57 @@
-[
-    {
-        "tiquete_id": "68aa7fe5693fbed42fa470f8",
-        "fecha_compra": "2025-07-30 14:25",
-        "origen": "Bogotá",
-        "destino": "Medellín",
-        "hora_salida": "2025-08-15 08:00",
-        "hora_llegada": "2025-08-15 09:10",
-        "maletas": [
-            {
-                "maleta_id": "M-001",
-                "peso": 12,
-                "unidad": "kg",
-                "destino": "Medellín",
-                "hora_despacho": "2025-08-15 07:30",
-                "estado": "Despachada"
-            }
-        ]
-    },
-    {
-        "tiquete_id": "68aa7fe5693fbed42fa470f9",
-        "fecha_compra": "2025-08-01 09:40",
-        "origen": "Cali",
-        "destino": "Cartagena",
-        "hora_salida": "2025-08-15 15:00",
-        "hora_llegada": "2025-08-15 17:30",
-        "maletas": [
-            {
-                "maleta_id": "M-002",
-                "peso": 15,
-                "unidad": "kg",
-                "destino": "Cartagena",
-                "hora_despacho": "2025-08-15 14:20",
-                "estado": "Despachada"
-            },
-            {
-                "maleta_id": "M-003",
-                "peso": 10,
-                "unidad": "kg",
-                "destino": "Cartagena",
-                "hora_despacho": "2025-08-15 14:25",
-                "estado": "Despachada"
-            }
-        ]
-    }
-]
+{
+    "tiquetes": [
+        {
+            "id": "TQ001",
+            "fechaCompra": "2025-07-30 14:25",
+            "origen": "Bogotá",
+            "destino": "Medellín",
+            "horaSalida": "2025-08-15 08:00",
+            "horaLlegada": "2025-08-15 09:10",
+            "maletas": 1
+        },
+        {
+            "id": "TQ002",
+            "fechaCompra": "2025-08-01 09:40",
+            "origen": "Cali",
+            "destino": "Cartagena",
+            "horaSalida": "2025-08-15 15:00",
+            "horaLlegada": "2025-08-15 17:30",
+            "maletas": 2
+        },
+        {
+            "id": "TQ003",
+            "fechaCompra": "2025-08-10 11:10",
+            "origen": "Medellín",
+            "destino": "Santa Marta",
+            "horaSalida": "2025-08-20 06:30",
+            "horaLlegada": "2025-08-20 08:15",
+            "maletas": 1
+        }
+    ],
+    "maletas": [
+        {
+            "id": "M001",
+            "peso": "23kg",
+            "destino": "Medellín",
+            "horaDespacho": "2025-08-15 07:30"
+        },
+        {
+            "id": "M002",
+            "peso": "18kg",
+            "destino": "Cartagena",
+            "horaDespacho": "2025-08-15 14:20"
+        },
+        {
+            "id": "M003",
+            "peso": "25kg",
+            "destino": "Santa Marta",
+            "horaDespacho": "2025-08-20 05:50"
+        },
+        {
+            "id": "M004",
+            "peso": "12kg",
+            "destino": "Cartagena",
+            "horaDespacho": "2025-08-15 14:40"
+        }
+    ]
+}

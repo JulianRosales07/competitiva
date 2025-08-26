@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Tiquetes from "./components/Tiquetes";
 import Maletas from "./components/Maletas";
-import "./App.css";
+import "./styles/App.css";
 
 function App() {
   const [activeTab, setActiveTab] = useState("tiquetes");
