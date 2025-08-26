@@ -1,13 +1,26 @@
+import Navbar from '../layout/Navbar'
+import Breadcrumbs from '../components/Breadcrumbs'
 import TicketsList from '../components/TicketsList'
 
 export default function TicketsPage() {
   return (
-    <main className="min-h-screen p-6 max-w-6xl mx-auto">
-      <header className="mb-6">
-        <h1 className="text-3xl font-bold text-blue-600">Tiquetes ✈️</h1>
-        <p className="text-sm text-gray-600">Vista con datos de prueba</p>
-      </header>
-      <TicketsList />
-    </main>
+    <>
+      <Navbar />
+      <main className="min-h-screen p-6 max-w-7xl mx-auto">
+        <div className="mb-4">
+          <Breadcrumbs items={[{ label: 'Inicio', to: '/' }, { label: 'Tiquetes' }]} />
+        </div>
+
+        <div className="card">
+          <div className="card-header">
+            <h2 className="card-title">Listado de tiquetes</h2>
+            <span className="text-xs text-gray-500">Mock</span>
+          </div>
+          <div className="card-body">
+            <TicketsList />
+          </div>
+        </div>
+      </main>
+    </>
   )
 }
