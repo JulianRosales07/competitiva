@@ -1,0 +1,56 @@
+/* Contenedor tipo tarjeta */
+.card {
+    background: #fff;
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 12px;
+    max-width: 1000px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Título */
+.card h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 22px;
+    color: #333;
+}
+
+/* Input de búsqueda */
+.search-input {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto 20px auto;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+/* Tabla */
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.custom-table th,
+.custom-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+}
+
+.custom-table th {
+    background: #007bff;
+    color: white;
+    font-weight: bold;
+}
+
+.custom-table tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+.custom-table tr:hover {
+    background: #f1f1f1;
+}
