@@ -5,7 +5,12 @@ import { TIQUETES_MOCK } from "../mock/tiquetes";
 import TicketCard from "./TicketCard";
 import TicketDetail from "./TicketDetail";
 import TicketForm from "./TicketForm";
+import TicketsFilters from "./TicketsFilters";
+import TicketsSort from "./TicketsSort";
 import { ticketId } from "../lib/id";
+
+type SortBy = 'fecha_vuelo' | 'precio' | 'numero';
+type SortDir = 'asc' | 'desc';
 
 export default function TicketsList() {
   const [data, setData] = useState<Tiquete[]>([]);
@@ -13,6 +18,15 @@ export default function TicketsList() {
   const [selected, setSelected] = useState<Tiquete | null>(null);
   const [creating, setCreating] = useState(false);
   const [editing, setEditing] = useState<Tiquete | null>(null);
+
+  // filtros
+  const [query, setQuery] = useState("");
+  const [estado, setEstado] = useState("");
+  const [clase, setClase] = useState("");
+
+  // sort
+  const [sortBy, setSortBy] = useState<SortBy>('fecha_vuelo');
+  const [sortDir, setSortDir] = useState<SortDir>('asc');
 
   useEffect(() => {
     const id = setTimeout(() => {
@@ -56,12 +70,48 @@ export default function TicketsList() {
     }
   }
 
+  const filtered = useMemo(() => {
+    return data.filter((t) => {
+      if (query && !t.numero.toLowerCase().includes(query.toLowerCase())) return false;
+      if (estado && t.estado !== estado) return false;
+      if (clase && t.clase !== clase) return false;
+      return true;
+    });
+  }, [data, query, estado, clase]);
+
+  const sorted = useMemo(() => {
+    const toNum = (x: any) => typeof x === 'number' ? x : Number(x) || 0;
+    const toDate = (iso: string) => {
+      const n = new Date(iso).getTime();
+      return Number.isFinite(n) ? n : 0;
+    };
+
+    const arr = [...filtered];
+    arr.sort((a, b) => {
+      let av: number | string = 0;
+      let bv: number | string = 0;
+
+      if (sortBy === 'precio') { av = toNum(a.precio); bv = toNum(b.precio); }
+      else if (sortBy === 'fecha_vuelo') { av = toDate(a.fecha_vuelo); bv = toDate(b.fecha_vuelo); }
+      else { av = a.numero; bv = b.numero; } // 'numero' alfabético
+
+      let cmp: number;
+      if (typeof av === 'number' && typeof bv === 'number') cmp = av - bv;
+      else cmp = String(av).localeCompare(String(bv), 'es');
+
+      return sortDir === 'asc' ? cmp : -cmp;
+    });
+    return arr;
+  }, [filtered, sortBy, sortDir]);
+
   if (loading) return <p className="text-sm text-gray-600">Cargando tiquetes…</p>;
 
   return (
     <>
-      <div className="flex flex-wrap gap-2 justify-between mb-4">
-        <p className="text-sm text-gray-600">{data.length} tiquetes</p>
+      <div className="flex flex-wrap gap-2 justify-between mb-2">
+        <p className="text-sm text-gray-600">
+          {sorted.length} tiquetes {sorted.length !== data.length ? `(de ${data.length})` : ""}
+        </p>
         <div className="flex gap-2">
           <button
             className="rounded-md bg-blue-600 text-white px-3 py-2 text-sm hover:bg-blue-700"
@@ -72,11 +122,22 @@ export default function TicketsList() {
         </div>
       </div>
 
-      {data.length === 0 ? (
-        <p className="text-sm">No hay tiquetes</p>
+      <TicketsFilters
+        query={query} setQuery={setQuery}
+        estado={estado} setEstado={setEstado}
+        clase={clase} setClase={setClase}
+      />
+
+      <TicketsSort
+        sortBy={sortBy} setSortBy={setSortBy}
+        sortDir={sortDir} setSortDir={setSortDir}
+      />
+
+      {sorted.length === 0 ? (
+        <p className="text-sm">No hay tiquetes que coincidan</p>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {data.map((t, i) => (
+          {sorted.map((t, i) => (
             <div key={t._id ?? `${t.numero}-${t.asiento}-${i}`} className="grid gap-2">
               <button className="text-left" onClick={() => setSelected(t)}>
                 <TicketCard t={t} />
