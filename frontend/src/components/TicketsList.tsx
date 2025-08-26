@@ -27,7 +27,13 @@ export default function TicketsList() {
 
   function updateTicket(updated: Tiquete) {
     setData((prev) =>
-      prev.map((t) => (t._id === updated._id ? updated : t.numero === updated.numero && t.asiento === updated.asiento ? updated : t))
+      prev.map((t) =>
+        t._id === updated._id
+          ? updated
+          : t.numero === updated.numero && t.asiento === updated.asiento
+          ? updated
+          : t
+      )
     );
     setEditing(null);
   }
@@ -39,7 +45,11 @@ export default function TicketsList() {
         t._id ? t._id !== target._id : !(t.numero === target.numero && t.asiento === target.asiento)
       )
     );
-    if (selected && (selected._id === target._id || (selected.numero === target.numero && selected.asiento === target.asiento))) {
+    if (
+      selected &&
+      (selected._id === target._id ||
+        (selected.numero === target.numero && selected.asiento === target.asiento))
+    ) {
       setSelected(null);
     }
   }
@@ -51,7 +61,10 @@ export default function TicketsList() {
       <div className="flex flex-wrap gap-2 justify-between mb-4">
         <p className="text-sm text-gray-600">{data.length} tiquetes</p>
         <div className="flex gap-2">
-          <button className="rounded-md bg-blue-600 text-white px-3 py-2 text-sm hover:bg-blue-700" onClick={() => setCreating(true)}>
+          <button
+            className="rounded-md bg-blue-600 text-white px-3 py-2 text-sm hover:bg-blue-700"
+            onClick={() => setCreating(true)}
+          >
             Nuevo tiquete
           </button>
         </div>
@@ -67,8 +80,18 @@ export default function TicketsList() {
                 <TicketCard t={t} />
               </button>
               <div className="flex gap-2">
-                <button className="rounded-md border px-3 py-1 text-sm hover:bg-gray-50" onClick={() => setEditing(t)}>Editar</button>
-                <button className="rounded-md border px-3 py-1 text-sm hover:bg-red-50 text-red-700 border-red-200" onClick={() => deleteTicket(t)}>Eliminar</button>
+                <button
+                  className="rounded-md border px-3 py-1 text-sm hover:bg-gray-50"
+                  onClick={() => setEditing(t)}
+                >
+                  Editar
+                </button>
+                <button
+                  className="rounded-md border px-3 py-1 text-sm hover:bg-red-50 text-red-700 border-red-200"
+                  onClick={() => deleteTicket(t)}
+                >
+                  Eliminar
+                </button>
               </div>
             </div>
           ))}
@@ -76,7 +99,9 @@ export default function TicketsList() {
       )}
 
       {selected && <TicketDetail tiquete={selected} onClose={() => setSelected(null)} />}
-      {creating && <TicketForm onCancel={() => setCreating(false)} onSubmit={addTicket} title="Nuevo tiquete" />}
+      {creating && (
+        <TicketForm onCancel={() => setCreating(false)} onSubmit={addTicket} title="Nuevo tiquete" />
+      )}
       {editing && (
         <TicketForm
           onCancel={() => setEditing(null)}
