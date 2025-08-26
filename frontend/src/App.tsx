@@ -1,13 +1,13 @@
-import TicketsList from "./components/TicketsList";
+import { Routes, Route, Navigate } from 'react-router-dom'
+import TicketsPage from './pages/TicketsPage'
+import TicketDetailPage from './pages/TicketDetailPage'
 
 export default function App() {
   return (
-    <main className="min-h-screen p-6 max-w-6xl mx-auto">
-      <header className="mb-6">
-        <h1 className="text-3xl font-bold text-blue-600">Tiquetes ✈️</h1>
-        <p className="text-sm text-gray-600">Vista con datos de prueba</p>
-      </header>
-      <TicketsList />
-    </main>
-  );
+    <Routes>
+      <Route path="/" element={<TicketsPage />} />
+      <Route path="/tiquete/:id" element={<TicketDetailPage />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  )
 }
