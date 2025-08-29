@@ -9,7 +9,7 @@ const {
 } = require('../controllers/rutaController');
 
 //Rutas del API
-router.get('/', getRutas);
+router.get('/obtenertodos', getRutas);
 router.get('/:codigo_ruta', getRutaByCodigo);
 router.post('/', createRuta);
 router.put('/:codigo_ruta', updateRuta);
